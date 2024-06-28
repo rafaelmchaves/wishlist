@@ -1,6 +1,7 @@
 package com.wishlist.domain.usecases;
 
 import com.wishlist.domain.Wishlist;
+import com.wishlist.domain.exceptions.ItemAlreadyInTheListException;
 import com.wishlist.domain.ports.WishlistPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class WishlistUseCase {
 
     private static void isItemAlreadyInTheList(String newProductId, Wishlist foundWishList) {
         if (foundWishList.getProductIds().stream().anyMatch(productId -> productId.equals(newProductId))) {
-            throw new RuntimeException("Item já foi salvo na lista");
+            throw new ItemAlreadyInTheListException();
         }
     }
 
