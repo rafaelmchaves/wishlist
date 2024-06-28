@@ -2,6 +2,7 @@ package com.wishlist.domain.usecases;
 
 import com.wishlist.domain.Wishlist;
 import com.wishlist.domain.exceptions.ItemAlreadyInTheListException;
+import com.wishlist.domain.exceptions.LimitMaxProductsExceededException;
 import com.wishlist.domain.ports.WishlistPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class WishlistUseCase {
         return wishlistPort.findClientWishList(clientId).orElse(null);
     }
 
-    public boolean isProductWishlist(String clientId, String productId) {
+    public boolean isProductInTheWishlist(String clientId, String productId) {
         final var wishlist = wishlistPort.findClientWishList(clientId).orElseThrow(RuntimeException::new);
         return wishlist.getProductIds().stream().anyMatch(productId::equals);
     }
@@ -47,7 +48,7 @@ public class WishlistUseCase {
 
     private static void verifyMaxSizeLimitExceeded(Wishlist foundWishList) {
         if (foundWishList.getProductIds().size() >= MAX_PRODUCTS_PER_CLIENT) {
-            throw new RuntimeException("Lista de desejos pode ter no máximo 20 items.");
+            throw new LimitMaxProductsExceededException(MAX_PRODUCTS_PER_CLIENT);
         }
     }
 

@@ -33,7 +33,7 @@ public class WishlistController {
 
     @GetMapping("/clients/{clientId}/wishlists/products/{productId}")
     public ResponseEntity<WishlistResponse> isProductWishlist(@PathVariable String clientId, @PathVariable String productId) {
-        final boolean isProductWishlist = wishlistUseCase.isProductWishlist(clientId, productId);
+        final boolean isProductWishlist = wishlistUseCase.isProductInTheWishlist(clientId, productId);
 
         return isProductWishlist ? ResponseEntity.ok(WishlistResponse.builder().clientId(clientId).productIds(List.of(productId)).build())
                 : ResponseEntity.noContent().build();

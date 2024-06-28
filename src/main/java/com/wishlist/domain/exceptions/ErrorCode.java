@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 
-    ITEM_ALREADY_IN_THE_LIST("ACC_01", "Item já existe na lista de desejos");
+    ITEM_ALREADY_IN_THE_LIST("WIS_01", "Item já existe na lista de desejos"),
+    LIMIT_EXCEEDED("WIS_02", "Lista de desejos pode ter no máximo %s items.");
 
     private final String code;
     private final String message;
