@@ -3,6 +3,7 @@ package com.wishlist.domain.usecases;
 import com.wishlist.domain.Wishlist;
 import com.wishlist.domain.exceptions.ItemAlreadyInTheListException;
 import com.wishlist.domain.exceptions.LimitMaxProductsExceededException;
+import com.wishlist.domain.exceptions.WishlistNotFoundException;
 import com.wishlist.domain.ports.WishlistPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,12 +35,12 @@ public class WishlistUseCase {
     }
 
     public boolean isProductInTheWishlist(String clientId, String productId) {
-        final var wishlist = wishlistPort.findClientWishList(clientId).orElseThrow(RuntimeException::new);
+        final var wishlist = wishlistPort.findClientWishList(clientId).orElseThrow(WishlistNotFoundException::new);
         return wishlist.getProductIds().stream().anyMatch(productId::equals);
     }
 
     public Wishlist deleteProductFromWishlist(String clientId, String productId) {
-        final var wishlist = wishlistPort.findClientWishList(clientId).orElseThrow(RuntimeException::new);
+        final var wishlist = wishlistPort.findClientWishList(clientId).orElseThrow(WishlistNotFoundException::new);
         wishlist.getProductIds().remove(productId);
         wishlistPort.updateWishlist(wishlist);
 
