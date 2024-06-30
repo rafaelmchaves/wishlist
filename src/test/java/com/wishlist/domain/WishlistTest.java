@@ -92,9 +92,7 @@ public class WishlistTest {
         assertThrows(LimitMaxProductsExceededException.class, ()-> wishlist.addProductToWishList(newProductId));
 
         //AND the product is not added in the list
-        assertAll(() -> {
-            assertEquals(20, wishlist.getProductIds().size());
-        });
+        assertEquals(20, wishlist.getProductIds().size());
 
     }
 

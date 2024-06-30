@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -99,6 +100,35 @@ public class WishlistUseCaseTest {
         final var wishlist = wishlistUseCase.findClientWishlist(clientId);
 
        Assertions.assertNull(wishlist);
+    }
+
+    @Test
+    void deleteProductFromWishlist_listWith2Products_oneProductIsRemoved() {
+        final String clientId = "2141412421";
+
+        final String product1 = "1241241";
+        final String product2 = "489532";
+        List<String> products = new ArrayList<String>();
+        products.add(product1);
+        products.add(product2);
+
+        final var wishlist = Wishlist.builder().id("342423").clientId(clientId)
+                .productIds(products)
+                .build();
+        Mockito.when(wishlistPort.findClientWishList(clientId)).thenReturn(Optional.of(wishlist));
+
+        wishlistUseCase.deleteProductFromWishlist(clientId, product1);
+
+        final var wishlistArgumentCaptor = ArgumentCaptor.forClass(Wishlist.class);
+        Mockito.verify(wishlistPort, Mockito.times(1)).updateWishlist(wishlistArgumentCaptor.capture());
+        final var capturedWishlist = wishlistArgumentCaptor.getValue();
+
+        Assertions.assertAll(() -> {
+            Assertions.assertEquals(1, capturedWishlist.getProductIds().size());
+            Assertions.assertEquals(clientId, capturedWishlist.getClientId());
+            Assertions.assertEquals(product2, capturedWishlist.getProductIds().get(0));
+        });
+
     }
 
 }
