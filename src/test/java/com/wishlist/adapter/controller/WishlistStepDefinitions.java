@@ -61,6 +61,11 @@ public class WishlistStepDefinitions {
         wishlistJPARepository.save(document);
     }
 
+    @Given("a client with ID {string} without wishlist")
+    public void aClientWithIDWithoutWishlist(String clientId) {
+        this.clientId = clientId;
+    }
+
     @Given("the wishlist contains {string} products")
     public void theWishlistContainsProducts(String amount) {
 
@@ -74,6 +79,19 @@ public class WishlistStepDefinitions {
         wishlistJPARepository.save(wishlistDocument);
     }
 
+    @Given("a client with ID {string} and a list of products")
+    public void aClientWithIDAndAListOfProductsProductList(String clientId, DataTable dataTable) {
+        this.clientId = clientId;
+        final var document = WishlistDocument.builder().clientId(clientId).productIds(dataTable.asList()).build();
+        wishlistJPARepository.save(document);
+    }
+
+    @Given("a client with ID {string} without products")
+    public void aClientWithIDWithoutProducts(String clientId) {
+        this.clientId = clientId;
+        wishlistJPARepository.save( WishlistDocument.builder().clientId(clientId).build());
+    }
+
     @When("the client adds the product to their wishlist")
     public void theClientAddsTheProductToTheirWishlist() throws Exception {
         WishlistRequest request = new WishlistRequest();
@@ -83,6 +101,21 @@ public class WishlistStepDefinitions {
         resultActions = mockMvc.perform(post("/wishlists")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
+    }
+
+    @When("the client checks if the product {string} is in their wishlist")
+    public void theClientChecksIfTheProductIsInTheirWishlist(String productId) throws Exception {
+        resultActions = mockMvc.perform(get("/clients/" + clientId + "/wishlist/products/" + productId));
+    }
+
+    @When("the client remove the product with ID {string} from their wishlist")
+    public void theClientRemoveTheProductWithIDFromTheirWishlist(String productId) throws Exception {
+        mockMvc.perform(delete("/clients/" + clientId + "/wishlist/products/" + productId)).andExpect(status().isOk());
+    }
+
+    @When("the client retrieves their wishlist")
+    public void theClientRetrievesTheirWishlist() throws Exception {
+        resultActions = mockMvc.perform(get("/clients/"+ clientId + "/wishlists"));
     }
 
     @Then("the product is added to the wishlist successfully")
@@ -115,23 +148,6 @@ public class WishlistStepDefinitions {
         resultActions.andExpect(content().json("{\"message\":\"" + message + "\",\"errorCode\":\"" + errorCode + "\"}"));
     }
 
-    @After
-    public void cleanUp() {
-        wishlistJPARepository.deleteAll();
-    }
-    
-    @Given("a client with ID {string} and a list of products")
-    public void aClientWithIDAndAListOfProductsProductList(String clientId, DataTable dataTable) {
-        this.clientId = clientId;
-        final var document = WishlistDocument.builder().clientId(clientId).productIds(dataTable.asList()).build();
-        wishlistJPARepository.save(document);
-    }
-
-    @When("the client retrieves their wishlist")
-    public void theClientRetrievesTheirWishlist() throws Exception {
-        resultActions = mockMvc.perform(get("/clients/"+ clientId + "/wishlists"));
-    }
-
     @Then("the wishlist is returned and contains")
     public void theWishlistContains(DataTable dataTable) throws Exception {
 
@@ -152,36 +168,20 @@ public class WishlistStepDefinitions {
         });
     }
 
-    @Given("a client with ID {string} without products")
-    public void aClientWithIDWithoutProducts(String clientId) {
-        this.clientId = clientId;
-        wishlistJPARepository.save( WishlistDocument.builder().clientId(clientId).build());
-    }
-
-    @Given("a client with ID {string} without wishlist")
-    public void aClientWithIDWithoutWishlist(String clientId) {
-        this.clientId = clientId;
-    }
-
     @Then("a wishlist is not returned")
     public void aWishlistIsNotReturned() throws Exception {
         resultActions.andExpect(status().isNoContent());
         assertEquals(0, resultActions.andReturn().getResponse().getContentAsByteArray().length);
     }
 
-    @When("the client checks if the product {string} is in their wishlist")
-    public void theClientChecksIfTheProductIsInTheirWishlist(String productId) throws Exception {
-        resultActions = mockMvc.perform(get("/clients/" + clientId + "/wishlist/products/" + productId));
-    }
-
-    @When("the client remove the product with ID {string} from their wishlist")
-    public void theClientRemoveTheProductWithIDFromTheirWishlist(String productId) throws Exception {
-        mockMvc.perform(delete("/clients/" + clientId + "/wishlist/products/" + productId)).andExpect(status().isOk());
-    }
-
     @Then("the product with ID {string} is not in the wishlist anymore")
     public void theProductWithIDIsNotInTheWishlistAnymore(String productId) {
         final var wishlist = wishlistJPARepository.findByClientId(clientId).get();
         assertFalse(wishlist.getProductIds().contains(productId));
+    }
+
+    @After
+    public void cleanUp() {
+        wishlistJPARepository.deleteAll();
     }
 }
