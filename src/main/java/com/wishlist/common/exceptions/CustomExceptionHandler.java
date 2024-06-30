@@ -38,7 +38,7 @@ public class CustomExceptionHandler {
             throw exception;
         }
 
-        log.error("Error: Code: " + exception.getCode() + " Message: " + exception.getMessage() + (exception.getCause() != null ? " - " + exception.getCause() : ""));
+        log.error("Error - Code: " + exception.getCode() + " Message: " + exception.getMessage() + (exception.getCause() != null ? " - " + exception.getCause() : ""));
         final var errorMessage = new ErrorMessage(exception.getMessage(), exception.getCode());
         HttpStatus httpStatus = exceptionMetadata.httpStatus();
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), httpStatus);
