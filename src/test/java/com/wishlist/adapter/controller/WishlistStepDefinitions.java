@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -173,5 +172,16 @@ public class WishlistStepDefinitions {
     @When("the client checks if the product {string} is in their wishlist")
     public void theClientChecksIfTheProductIsInTheirWishlist(String productId) throws Exception {
         resultActions = mockMvc.perform(get("/clients/" + clientId + "/wishlist/products/" + productId));
+    }
+
+    @When("the client remove the product with ID {string} from their wishlist")
+    public void theClientRemoveTheProductWithIDFromTheirWishlist(String productId) throws Exception {
+        mockMvc.perform(delete("/clients/" + clientId + "/wishlist/products/" + productId)).andExpect(status().isOk());
+    }
+
+    @Then("the product with ID {string} is not in the wishlist anymore")
+    public void theProductWithIDIsNotInTheWishlistAnymore(String productId) {
+        final var wishlist = wishlistJPARepository.findByClientId(clientId).get();
+        assertFalse(wishlist.getProductIds().contains(productId));
     }
 }
