@@ -24,6 +24,7 @@ import java.util.List;
 public class WishlistController {
 
     private final WishlistUseCase wishlistUseCase;
+
     @PostMapping("/wishlists")
     @Operation(summary = "Adicione um produto à lista de desejos do cliente. Se o cliente ainda não tiver uma lista de desejos, criamos a estrutura da lista de desejos")
     @ApiResponses(value = {

@@ -1,8 +1,6 @@
 package com.wishlist.domain.usecases;
 
 import com.wishlist.domain.Wishlist;
-import com.wishlist.domain.exceptions.ItemAlreadyInTheListException;
-import com.wishlist.domain.exceptions.LimitMaxProductsExceededException;
 import com.wishlist.domain.exceptions.WishlistNotFoundException;
 import com.wishlist.domain.ports.WishlistPort;
 import lombok.RequiredArgsConstructor;
@@ -14,20 +12,16 @@ import java.util.ArrayList;
 @Service
 public class WishlistUseCase {
 
-    private static final int MAX_PRODUCTS_PER_CLIENT = 20;
-
     private final WishlistPort wishlistPort;
 
     public void addProductToWishlist(String clientId, String productId) {
 
-        var foundWishList = wishlistPort.findClientWishList(clientId)
+        var wishlist = wishlistPort.findClientWishList(clientId)
                 .orElse(createNewWishlist(clientId));
 
-        verifyMaxSizeLimitExceeded(foundWishList);
-        isItemAlreadyInTheList(productId, foundWishList);
-        foundWishList.getProductIds().add(productId);
+        wishlist.addProductToWishList(productId);
 
-        wishlistPort.updateWishlist(foundWishList);
+        wishlistPort.updateWishlist(wishlist);
     }
 
     public Wishlist findClientWishlist(String clientId) {
@@ -45,18 +39,6 @@ public class WishlistUseCase {
         wishlistPort.updateWishlist(wishlist);
 
         return wishlist;
-    }
-
-    private static void verifyMaxSizeLimitExceeded(Wishlist foundWishList) {
-        if (foundWishList.getProductIds().size() >= MAX_PRODUCTS_PER_CLIENT) {
-            throw new LimitMaxProductsExceededException(MAX_PRODUCTS_PER_CLIENT);
-        }
-    }
-
-    private static void isItemAlreadyInTheList(String newProductId, Wishlist foundWishList) {
-        if (foundWishList.getProductIds().stream().anyMatch(productId -> productId.equals(newProductId))) {
-            throw new ItemAlreadyInTheListException();
-        }
     }
 
     private static Wishlist createNewWishlist(String clientId) {
