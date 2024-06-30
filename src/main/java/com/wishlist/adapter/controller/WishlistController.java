@@ -51,7 +51,7 @@ public class WishlistController {
                 : ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/clients/{clientId}/wishlists/products/{productId}")
+    @GetMapping("/clients/{clientId}/wishlist/products/{productId}")
     @Operation(summary = "Verifica se o cliente tem um produto específico na lista de desejos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Produto foi encontrado dentro da lista de desejo e retornado no corpo da resposta"),

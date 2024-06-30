@@ -169,4 +169,9 @@ public class WishlistStepDefinitions {
         resultActions.andExpect(status().isNoContent());
         assertEquals(0, resultActions.andReturn().getResponse().getContentAsByteArray().length);
     }
+
+    @When("the client checks if the product {string} is in their wishlist")
+    public void theClientChecksIfTheProductIsInTheirWishlist(String productId) throws Exception {
+        resultActions = mockMvc.perform(get("/clients/" + clientId + "/wishlist/products/" + productId));
+    }
 }
