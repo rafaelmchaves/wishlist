@@ -73,4 +73,32 @@ public class WishlistUseCaseTest {
         });
 
     }
+
+    @Test
+    void findClientWishlist_clientIdExist_returnWishlist() {
+        final String clientId = "2141412421";
+        final String id = "73453252";
+
+        Mockito.when(wishlistPort.findClientWishList(clientId)).thenReturn(Optional.of(Wishlist.builder().clientId(clientId)
+                .id(id).build()));
+
+        final var wishlist = wishlistUseCase.findClientWishlist(clientId);
+
+        Assertions.assertAll(() -> {
+            Assertions.assertEquals(clientId, wishlist.getClientId());
+            Assertions.assertEquals(id, wishlist.getId());
+        });
+    }
+
+    @Test
+    void findClientWishlist_noWishListFound_returnNull() {
+        final String clientId = "2141412421";
+
+        Mockito.when(wishlistPort.findClientWishList(clientId)).thenReturn(Optional.empty());
+
+        final var wishlist = wishlistUseCase.findClientWishlist(clientId);
+
+       Assertions.assertNull(wishlist);
+    }
+
 }
