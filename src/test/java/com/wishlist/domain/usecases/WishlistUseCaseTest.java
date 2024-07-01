@@ -108,7 +108,7 @@ public class WishlistUseCaseTest {
 
         final String product1 = "1241241";
         final String product2 = "489532";
-        List<String> products = new ArrayList<String>();
+        List<String> products = new ArrayList<>();
         products.add(product1);
         products.add(product2);
 
