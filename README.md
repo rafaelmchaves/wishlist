@@ -23,7 +23,6 @@ mvn clean package
 ```
 
 
-
 # Endpoints 
 
 Para acessar a documentação os endpoints rest, acesse esse link:
@@ -62,6 +61,23 @@ Por isso, sempre que estamos passando dados entre as camadas Domain e Adapter, �
 
 O código do repositório de acesso ao mongo está na camada de output.
 
+## System Design
+
+![Image](arch-design.png)
+
+## MongoDB
+
+Eu escolhi MongoDB como base noSql, porque ele é ótimo para armazenar o tipo de estrutura de lista de string(a lista de productId),
+e ele é altamente escalável e de alta disponibilidade.
+Além disso, eu tenho muito conhecimento sobre essa base de dados. 
+
+Outra base de dados que seria perfeita para esse caso seria uma base chave-valor(Key-value store), tais como cassandra ou dynamoDB.
+Pois, o id do cliente seria a key, e a lista de id dos produtos seria o valor. Dessa forma, ficaria simples de pesquisar.
+Lembrando que o Cassandra foi projetada para ter um alto volume de escrita com baixa latência, e o DynamoDB projetado para ter alto volume de leitura.
+
+Um pouco mais da explicação de cada um deles:
+https://medium.com/@rafaelmchaves/demystifying-database-types-relational-vs-non-relational-and-when-to-use-each-b68f1d8a9357
+
 ## Cache
 
 Foi incluído cache na aplicação. Normalmente, uma wishlist é pouco alterada, mas bastante consultada, seja o cliente 
@@ -69,8 +85,6 @@ olhando se os produtos na wishlist abaixou, seja pela própria empresa para mand
 Por causa disso, adicionei cache distribuído a aplicação para que o sistema fique mais responsivo e com respostas mais rápidas, além
 disso, reduzindo o throughput no banco de dados em disco. 
 Escolhi o Redis como banco de dados de cache: ele está em memória e é um dos melhores banco de dados para cache disponíveis no mercado.
-
-## Prometheus and Grafana
 
 ## Unit and integration tests
 
