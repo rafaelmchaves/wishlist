@@ -3,6 +3,7 @@ package com.wishlist.adapter.output;
 import com.wishlist.adapter.output.mongo.WishlistDocument;
 import com.wishlist.adapter.output.mongo.WishlistJPARepository;
 import com.wishlist.domain.Wishlist;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class WishlistRepositoryTest {
@@ -67,6 +69,27 @@ public class WishlistRepositoryTest {
             Assertions.assertEquals(id, document.getId().toString());
             Assertions.assertEquals(productId, document.getProductIds().get(0));
         });
+    }
+
+    @Test
+    void findClientWishList_clientId_retrieveSuccessfully() {
+        final var clientId = "341412";
+        final var productId = "93293y2";
+        final var id = "6683378553cf8d3aa0ab7463";
+        List<String> list = new ArrayList<>();
+        list.add(productId);
+
+        final var document = WishlistDocument.builder().id(new ObjectId(id)).clientId(clientId).productIds(list).build();
+        Mockito.when(wishlistJPARepository.findByClientId(clientId)).thenReturn(Optional.of(document));
+
+        final var wishlist = wishlistRepository.findClientWishList(clientId).get();
+
+        Assertions.assertAll(() -> {
+            Assertions.assertEquals(clientId, wishlist.getClientId());
+            Assertions.assertEquals(id, wishlist.getId());
+            Assertions.assertEquals(productId, wishlist.getProductIds().get(0));
+        });
+
     }
 
 }
