@@ -14,6 +14,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -47,6 +48,9 @@ public class WishlistStepDefinitions {
     private String clientId;
 
     private WishlistDocument resultedWishlist;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     @Given("a client with ID {string} and a product with ID {string}")
     public void aClientWithIDAndAProductWithID(String clientId, String productId) {
@@ -183,5 +187,6 @@ public class WishlistStepDefinitions {
     @After
     public void cleanUp() {
         wishlistJPARepository.deleteAll();
+        cacheManager.getCache("wishlist").clear();
     }
 }

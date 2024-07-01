@@ -5,11 +5,12 @@ import com.wishlist.domain.exceptions.LimitMaxProductsExceededException;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Builder
 @Getter
-public class Wishlist {
+public class Wishlist implements Serializable {
 
     private static final int MAX_PRODUCTS_PER_CLIENT = 20;
 

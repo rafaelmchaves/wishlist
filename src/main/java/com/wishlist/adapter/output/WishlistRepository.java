@@ -6,6 +6,8 @@ import com.wishlist.domain.Wishlist;
 import com.wishlist.domain.ports.WishlistPort;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -17,6 +19,7 @@ public class WishlistRepository implements WishlistPort {
     private final WishlistJPARepository wishlistJPARepository;
 
     @Override
+    @CacheEvict(value = "wishlist", key = "#wishlist.clientId")
     public void updateWishlist(Wishlist wishlist) {
         var document = WishlistDocument.builder()
                 .clientId(wishlist.getClientId())
@@ -30,6 +33,7 @@ public class WishlistRepository implements WishlistPort {
     }
 
     @Override
+    @Cacheable(value = "wishlist", key = "#clientId")
     public Optional<Wishlist> findClientWishList(String clientId) {
         final var wishlistDocument = wishlistJPARepository.findByClientId(clientId);
         return wishlistDocument.map(document -> Wishlist.builder().id(document.getId().toString()).clientId(clientId)
