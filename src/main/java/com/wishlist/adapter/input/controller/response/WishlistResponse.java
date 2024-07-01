@@ -1,4 +1,4 @@
-package com.wishlist.adapter.controller.response;
+package com.wishlist.adapter.input.controller.response;
 
 import lombok.Builder;
 import lombok.Getter;

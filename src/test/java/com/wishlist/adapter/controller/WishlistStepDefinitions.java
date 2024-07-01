@@ -1,8 +1,8 @@
 package com.wishlist.adapter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wishlist.adapter.controller.requests.WishlistRequest;
-import com.wishlist.adapter.controller.response.WishlistResponse;
+import com.wishlist.adapter.input.controller.requests.WishlistRequest;
+import com.wishlist.adapter.input.controller.response.WishlistResponse;
 import com.wishlist.adapter.output.mongo.WishlistDocument;
 import com.wishlist.adapter.output.mongo.WishlistJPARepository;
 import io.cucumber.datatable.DataTable;

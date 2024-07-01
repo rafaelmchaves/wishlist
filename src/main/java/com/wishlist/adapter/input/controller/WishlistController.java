@@ -1,7 +1,7 @@
-package com.wishlist.adapter.controller;
+package com.wishlist.adapter.input.controller;
 
-import com.wishlist.adapter.controller.requests.WishlistRequest;
-import com.wishlist.adapter.controller.response.WishlistResponse;
+import com.wishlist.adapter.input.controller.requests.WishlistRequest;
+import com.wishlist.adapter.input.controller.response.WishlistResponse;
 import com.wishlist.common.exceptions.ErrorMessage;
 import com.wishlist.domain.Wishlist;
 import com.wishlist.domain.usecases.WishlistUseCase;
