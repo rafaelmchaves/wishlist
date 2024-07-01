@@ -6,7 +6,7 @@ Feature: Add products to Wishlist
     Then the product is added to the wishlist successfully
     And the product with ID "18917311" was added to the wishlist successfully
 
-  Scenario: Add the first product in the wishlist
+  Scenario: Add a second product in the wishlist
     Given a client with ID "128981341" and a product with ID "18917311"
     And the product with ID "91371782" already exists in the wishlist
     When the client adds the product to their wishlist
@@ -14,7 +14,7 @@ Feature: Add products to Wishlist
     And the product with ID "91371782" was added to the wishlist successfully
     And  the product with ID "18917311" was added to the wishlist successfully
 
-  Scenario: Adicionar o primeiro produto na wishlist do cliente com sucesso
+  Scenario: Try to add the same product in the wishlist
     Given a client with ID "128981341" and a product with ID "18917311"
     And the product with ID "18917311" already exists in the wishlist
     When the client adds the product to their wishlist
