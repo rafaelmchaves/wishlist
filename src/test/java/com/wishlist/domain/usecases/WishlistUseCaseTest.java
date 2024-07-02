@@ -1,6 +1,7 @@
 package com.wishlist.domain.usecases;
 
 import com.wishlist.domain.Wishlist;
+import com.wishlist.domain.exceptions.WishlistNotFoundException;
 import com.wishlist.domain.ports.WishlistPort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class WishlistUseCaseTest {
 
@@ -129,6 +131,56 @@ public class WishlistUseCaseTest {
             Assertions.assertEquals(product2, capturedWishlist.getProductIds().get(0));
         });
 
+    }
+
+    @Test
+    void isProductInTheWishlist_clientIdExistsAndProductIdIsWishlist_returnTrue() {
+        final String clientId = "2141412421";
+
+        final String product1 = "1241241";
+        final String product2 = "489532";
+        List<String> products = new ArrayList<>();
+        products.add(product1);
+        products.add(product2);
+        final var wishlist = Wishlist.builder().id("342423").clientId(clientId)
+                .productIds(products)
+                .build();
+
+        Mockito.when(wishlistPort.findClientWishList(clientId)).thenReturn(Optional.of(wishlist));
+
+        boolean isProductInTheWishlist = wishlistUseCase.isProductInTheWishlist(clientId, product1);
+
+        Assertions.assertTrue(isProductInTheWishlist);
+    }
+
+    @Test
+    void isProductInTheWishlist_clientIdDoesNotExist_throwException() {
+        final String clientId = "2141412421";
+        final String productId = "1241241";
+
+        Mockito.when(wishlistPort.findClientWishList(clientId)).thenReturn(Optional.empty());
+
+        assertThrows(WishlistNotFoundException.class, () -> wishlistUseCase.isProductInTheWishlist(clientId, productId));
+    }
+
+    @Test
+    void isProductInTheWishlist_clientIdExistsAndProductIdIsNotWishlist_returnTrue() {
+        final String clientId = "2141412421";
+
+        final String product1 = "1241241";
+        final String product2 = "489532";
+        List<String> products = new ArrayList<>();
+        products.add(product1);
+        products.add(product2);
+        final var wishlist = Wishlist.builder().id("342423").clientId(clientId)
+                .productIds(products)
+                .build();
+
+        Mockito.when(wishlistPort.findClientWishList(clientId)).thenReturn(Optional.of(wishlist));
+
+        boolean isProductInTheWishlist = wishlistUseCase.isProductInTheWishlist(clientId, "980218941");
+
+        Assertions.assertFalse(isProductInTheWishlist);
     }
 
 }
