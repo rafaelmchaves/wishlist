@@ -52,7 +52,8 @@ public class WishlistController {
     @Operation(summary = "Verifica se o cliente tem um produto específico na lista de desejos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Produto foi encontrado dentro da lista de desejo e retornado no corpo da resposta"),
-            @ApiResponse(responseCode = "204", description = "Produto não foi encontrado na lista de desejos do cliente"),
+            @ApiResponse(responseCode = "204", description = "Produto não foi encontrado na lista de desejos do cliente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))),
             @ApiResponse(responseCode = "404", description = "Wishlist não foi encontrada para aquele cliente",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
     })
