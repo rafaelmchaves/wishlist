@@ -115,6 +115,15 @@ Para rodar o docker use `docker-compose up`.
 
 Para rodar os testes pode usar simplesmente o comando `mvn clean package`.
 
+Atenção: Os testes integrados rodam na porta 8080. Se tiver rodando a aplicação na mesma porta, os testes integrados falharão.
+
+Para mudar a porta, adicione a propriedade no properties(com a porta que queira):
+`server.port=8081`
+
+Abaixo mostra a cobertura de linhas, classes e métodos:
+
+![Image](coverage.png)
+
 ### Profiles
 
 Quando os testes estão rodando, eles estão executando no profile de testes. Estaria usando as propriedades do arquivo 
