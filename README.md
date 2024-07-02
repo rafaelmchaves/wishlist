@@ -71,12 +71,8 @@ Eu escolhi MongoDB como base noSql, porque ele é ótimo para armazenar o tipo d
 e ele é altamente escalável e de alta disponibilidade.
 Além disso, eu tenho muito conhecimento sobre essa base de dados. 
 
-Outra base de dados que seria perfeita para esse caso seria uma base chave-valor(Key-value store), tais como cassandra ou dynamoDB.
-Pois, o id do cliente seria a key, e a lista de id dos produtos seria o valor. Dessa forma, ficaria simples de pesquisar.
-Lembrando que o Cassandra foi projetada para ter um alto volume de escrita com baixa latência, e o DynamoDB projetado para ter alto volume de leitura.
-
-Um pouco mais da explicação de cada um deles:
-https://medium.com/@rafaelmchaves/demystifying-database-types-relational-vs-non-relational-and-when-to-use-each-b68f1d8a9357
+Exemplo de documento armazenado no mongo:
+![Image](document-example.png)
 
 ## Cache
 
