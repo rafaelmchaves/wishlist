@@ -6,6 +6,8 @@ import com.wishlist.domain.ports.WishlistPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 @RequiredArgsConstructor
@@ -42,6 +44,8 @@ public class WishlistUseCase {
     }
 
     private static Wishlist createNewWishlist(String clientId) {
-        return Wishlist.builder().clientId(clientId).productIds(new ArrayList<>()).build();
+        final var now = LocalDateTime.now((ZoneOffset.UTC));
+        return Wishlist.builder().clientId(clientId).creationDateTime(now)
+                .updateDateTime(now).productIds(new ArrayList<>()).build();
     }
 }

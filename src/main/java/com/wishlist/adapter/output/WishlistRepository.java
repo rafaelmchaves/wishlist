@@ -10,6 +10,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -23,10 +25,13 @@ public class WishlistRepository implements WishlistPort {
     public void updateWishlist(Wishlist wishlist) {
         var document = WishlistDocument.builder()
                 .clientId(wishlist.getClientId())
+                .creationDateTime(wishlist.getCreationDateTime())
+                .updateDateTime(wishlist.getUpdateDateTime())
                 .productIds(wishlist.getProductIds()).build();
 
         if (wishlist.getId() != null) {
             document.setId(new ObjectId(wishlist.getId()));
+            document.setUpdateDateTime(LocalDateTime.now(ZoneOffset.UTC));
         }
 
         wishlistJPARepository.save(document);
@@ -37,6 +42,7 @@ public class WishlistRepository implements WishlistPort {
     public Optional<Wishlist> findClientWishList(String clientId) {
         final var wishlistDocument = wishlistJPARepository.findByClientId(clientId);
         return wishlistDocument.map(document -> Wishlist.builder().id(document.getId().toString()).clientId(clientId)
+                .creationDateTime(document.getCreationDateTime()).updateDateTime(document.getUpdateDateTime())
                 .productIds(document.getProductIds()).build());
     }
 

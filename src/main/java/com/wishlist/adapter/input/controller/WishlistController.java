@@ -75,7 +75,9 @@ public class WishlistController {
     }
 
     private static WishlistResponse getWishlistResponse(Wishlist wishlist) {
-        return WishlistResponse.builder().clientId(wishlist.getClientId()).productIds(wishlist.getProductIds()).build();
+        return WishlistResponse.builder().clientId(wishlist.getClientId()).productIds(wishlist.getProductIds())
+                .creationDateTime(wishlist.getCreationDateTime()).updateDateTime(wishlist.getUpdateDateTime())
+                .build();
     }
 
 }

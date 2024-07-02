@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -17,6 +18,8 @@ public class Wishlist implements Serializable {
     private String id;
     private List<String> productIds;
     private String clientId;
+    private LocalDateTime creationDateTime;
+    private LocalDateTime updateDateTime;
 
     public void addProductToWishList(String productId) {
         verifyMaxSizeLimitExceeded();

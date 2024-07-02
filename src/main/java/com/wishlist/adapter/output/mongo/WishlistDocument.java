@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -19,5 +20,10 @@ public class WishlistDocument {
     private ObjectId id;
     private String clientId;
     private List<String> productIds;
+
+    private LocalDateTime creationDateTime;
+
+    @Setter
+    private LocalDateTime updateDateTime;
 
 }
