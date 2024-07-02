@@ -29,7 +29,7 @@ Para rodar o projeto spring boot:
 mvn spring-boot:run
 ```
 
-Incluí também o arquivo run.sh que pode ser executado. Pode ser que tenha que dar permissões para esse arquivo.
+Incluí também o arquivo `run.sh` que pode ser executado, ele faz exatamente os comandos acima. Pode ser que tenha que dar permissões para rodar esse arquivo.
 A primeira execução fazendo os downloads de todas as imagens pode levar um tempo.
 
 # Endpoints 
@@ -79,7 +79,7 @@ no mongoDB. Além disso, temos um cache em memória RAM.
 
 ## MongoDB
 
-Eu escolhi MongoDB como base noSql, porque ele é ótimo para armazenar o tipo de estrutura de lista de string(a lista de productId),
+Eu escolhi o MongoDB como base noSql, porque ele é ótimo para armazenar o tipo de estrutura de lista de string(a lista de productId),
 e ele é altamente escalável e de alta disponibilidade.
 Além disso, eu tenho muito conhecimento sobre essa base de dados. 
 
@@ -95,6 +95,11 @@ disso, reduzindo o throughput no banco de dados em disco.
 Escolhi o Redis como banco de dados de cache: ele está em memória e é um dos melhores banco de dados para cache disponíveis no mercado.
 Link mostrando um caso parecido do uso do Redis como cache:
 https://redis.io/learn/howtos/solutions/microservices/caching
+
+## Grafana e prometheus
+
+Eu incluí um arquivo docker de monitoramento com prometheus e grafana caso seja interesse de monitorar a aplicação.
+É necessário criar os dashboards no Grafana.
 
 ## Unit and integration tests
 
