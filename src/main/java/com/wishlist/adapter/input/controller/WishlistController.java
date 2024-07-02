@@ -1,6 +1,5 @@
 package com.wishlist.adapter.input.controller;
 
-import com.wishlist.adapter.input.controller.requests.WishlistRequest;
 import com.wishlist.adapter.input.controller.response.WishlistResponse;
 import com.wishlist.common.exceptions.ErrorMessage;
 import com.wishlist.domain.Wishlist;
@@ -25,7 +24,7 @@ public class WishlistController {
 
     private final WishlistUseCase wishlistUseCase;
 
-    @PostMapping("/wishlists")
+    @PostMapping("/clients/{clientId}/wishlist/products/{productId}")
     @Operation(summary = "Adicione um produto à lista de desejos do cliente. Se o cliente ainda não tiver uma lista de desejos, criamos a estrutura da lista de desejos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Wishlist criada"),
@@ -33,9 +32,8 @@ public class WishlistController {
                     "Item já foi adicionado na lista de desejos",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
     })
-    public ResponseEntity<Void> addProductToWishList(@RequestBody WishlistRequest wishlistRequest) {
-        wishlistUseCase.addProductToWishlist(wishlistRequest.getClientId(), wishlistRequest.getProductId());
-
+    public ResponseEntity<Void> addProductToWishList(@PathVariable String clientId, @PathVariable String productId) {
+        wishlistUseCase.addProductToWishlist(clientId, productId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -46,7 +44,6 @@ public class WishlistController {
     @GetMapping("/clients/{clientId}/wishlists")
     public ResponseEntity<WishlistResponse> getWishlist(@PathVariable String clientId) {
         final var wishlist = wishlistUseCase.findClientWishlist(clientId);
-
         return wishlist != null ? ResponseEntity.ok(getWishlistResponse(wishlist))
                 : ResponseEntity.noContent().build();
     }
@@ -61,7 +58,6 @@ public class WishlistController {
     })
     public ResponseEntity<WishlistResponse> isProductWishlist(@PathVariable String clientId, @PathVariable String productId) {
         final boolean isProductWishlist = wishlistUseCase.isProductInTheWishlist(clientId, productId);
-
         return isProductWishlist ? ResponseEntity.ok(WishlistResponse.builder().clientId(clientId).productIds(List.of(productId)).build())
                 : ResponseEntity.noContent().build();
     }

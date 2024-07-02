@@ -1,4 +1,4 @@
-package com.wishlist.adapter.controller;
+package com.wishlist.stepdefinitions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wishlist.adapter.input.controller.requests.WishlistRequest;
@@ -104,7 +104,7 @@ public class WishlistStepDefinitions {
         request.setClientId(clientId);
         request.setProductId(productId);
 
-        resultActions = mockMvc.perform(post("/wishlists")
+        resultActions = mockMvc.perform(post("/clients/" + clientId + "/wishlist/products/" + productId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
     }
