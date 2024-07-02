@@ -12,6 +12,8 @@ os seguintes requisitos:
 
 Criei um arquivo docker-compose.yml onde podemos subir o MongoDB e o Redis.
 
+É necessário ter instalado o docker e o maven na máquina.
+
 ```
 docker-compose up
 ```
@@ -21,6 +23,14 @@ Para rodar os testes e criar o jar:
 ```
 mvn clean package
 ```
+
+Para rodar o projeto spring boot:
+```
+mvn spring-boot:run
+```
+
+Incluí também o arquivo run.sh que pode ser executado. Pode ser que tenha que dar permissões para esse arquivo.
+A primeira execução fazendo os downloads de todas as imagens pode levar um tempo.
 
 # Endpoints 
 
@@ -93,3 +103,17 @@ Eu criei testes unitários para as classes no pacote de domain e repository.
 Criei testes integrados que consiga testar todas as integrações dos endpoints. Usei cucumber, onde criei as descrições 
 dos testes usando Gherkin. Acredito que o BDD é uma ótima prática que visa melhorar o entendimento do comportamento da aplicação.
 Eu também chequei se o dado foi salvo corretamente no banco de dados.
+
+É necessário subir o mongo e o redis no docker-compose.yml antes de rodar os testes.
+
+Para rodar o docker use `docker-compose up`.
+
+Para rodar os testes pode usar simplesmente o comando `mvn clean package`.
+
+### Profiles
+
+Quando os testes estão rodando, eles estão executando no profile de testes. Estaria usando as propriedades do arquivo 
+`application-tests.properties`.
+
+Na classe de `WishlistStepDefinitions` tem uma annotation `@ActiveProfiles(value = "tests")` que define qual arquivo properties vai ser executado.
+
