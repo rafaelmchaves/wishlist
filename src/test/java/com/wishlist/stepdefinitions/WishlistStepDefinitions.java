@@ -1,7 +1,6 @@
 package com.wishlist.stepdefinitions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wishlist.adapter.input.controller.requests.WishlistRequest;
 import com.wishlist.adapter.input.controller.response.WishlistResponse;
 import com.wishlist.adapter.output.mongo.WishlistDocument;
 import com.wishlist.adapter.output.mongo.WishlistJPARepository;
@@ -100,13 +99,9 @@ public class WishlistStepDefinitions {
 
     @When("the client adds the product to their wishlist")
     public void theClientAddsTheProductToTheirWishlist() throws Exception {
-        WishlistRequest request = new WishlistRequest();
-        request.setClientId(clientId);
-        request.setProductId(productId);
 
         resultActions = mockMvc.perform(post("/clients/" + clientId + "/wishlist/products/" + productId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)));
+                .contentType(MediaType.APPLICATION_JSON));
     }
 
     @When("the client checks if the product {string} is in their wishlist")
