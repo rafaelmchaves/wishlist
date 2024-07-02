@@ -22,7 +22,6 @@ Para rodar os testes e criar o jar:
 mvn clean package
 ```
 
-
 # Endpoints 
 
 Para acessar a documentação os endpoints rest, acesse esse link:
@@ -63,6 +62,9 @@ O código do repositório de acesso ao mongo está na camada de output.
 
 ## System Design
 
+O desenho da aplicação é bem simples, em grosso modo, existem várias fontes que podem consultar a wishlist da aplicação, 
+seja via frontend(por meio de um API gateway, por exemplo), seja por outros microserviços. O nosso serviço adiciona e consulta dados 
+no mongoDB. Além disso, temos um cache em memória RAM.
 ![Image](arch-design.png)
 
 ## MongoDB
@@ -78,9 +80,11 @@ Exemplo de documento armazenado no mongo:
 
 Foi incluído cache na aplicação. Normalmente, uma wishlist é pouco alterada, mas bastante consultada, seja o cliente 
 olhando se os produtos na wishlist abaixou, seja pela própria empresa para mandar Ads sobre os produtos na wishlist.
-Por causa disso, adicionei cache distribuído a aplicação para que o sistema fique mais responsivo e com respostas mais rápidas, além
+Por causa disso, adicionei cache distribuído na aplicação para que o sistema fique mais responsivo e com respostas mais rápidas, além
 disso, reduzindo o throughput no banco de dados em disco. 
 Escolhi o Redis como banco de dados de cache: ele está em memória e é um dos melhores banco de dados para cache disponíveis no mercado.
+Link mostrando um caso parecido do uso do Redis como cache:
+https://redis.io/learn/howtos/solutions/microservices/caching
 
 ## Unit and integration tests
 
@@ -88,3 +92,4 @@ Eu criei testes unitários para as classes no pacote de domain e repository.
 
 Criei testes integrados que consiga testar todas as integrações dos endpoints. Usei cucumber, onde criei as descrições 
 dos testes usando Gherkin. Acredito que o BDD é uma ótima prática que visa melhorar o entendimento do comportamento da aplicação.
+Eu também chequei se o dado foi salvo corretamente no banco de dados.
