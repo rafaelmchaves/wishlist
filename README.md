@@ -131,3 +131,13 @@ Quando os testes estão rodando, eles estão executando no profile de testes. Es
 
 Na classe de `WishlistStepDefinitions` tem uma annotation `@ActiveProfiles(value = "tests")` que define qual arquivo properties vai ser executado.
 
+# Futuro do projeto
+
+Acredito para o futuro desse projeto podemos acrescentar as seguintes funcionalidades:
+
+Retry e Circuit Breaker: Seria interessante criar um mecanismo de retry quando tiver muitos acessos de leitura e escrita, caso algum problema de rede ou algo parecido acontecer.
+Caso, tenhamos muitos erros na aplicação(banco de dados fora por muito tempo, ou problemas de rede etc), abrir o circuito seria interessante para reduzir o throughput da aplicação,
+e assim, ela conseguir se restaurar mais rápido. Quando tudo tiver ok, o circuito será aberto de forma automática novamente.
+
+Message Queue: Se a aplicação tiver milhões de modificações nna wishlist, talvez seria interessante avaliar a criação de um message broker para processar de forma assíncrona essas alterações,
+desde que é interessante que a wishlist seja altamente disponível, mas que não precisa ser imediatamente atualizada.

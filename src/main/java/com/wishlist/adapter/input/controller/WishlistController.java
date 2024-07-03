@@ -63,7 +63,7 @@ public class WishlistController {
                 : ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Deleta um produto específico na lista de desejos do cliente")
+    @Operation(summary = "Remove um produto específico na lista de desejos do cliente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Produto foi excluído com sucesso da lista de desejos"),
             @ApiResponse(responseCode = "404", description = "Wishlist não foi encontrada para o cliente",
